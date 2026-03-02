@@ -1,16 +1,53 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Media Gallery</title>
+    <style>
+        body { background-color: #121212; color: white; font-family: sans-serif; text-align: center; padding: 20px; }
+        input { width: 80%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #444; background: #222; color: white; }
+        button { padding: 12px 24px; background-color: #007bff; color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        #player-container { margin-top: 20px; width: 100%; }
+        iframe { width: 100%; height: 350px; border: 2px solid #333; border-radius: 12px; }
+    </style>
+</head>
 <body>
-  <h2>Paste Video ID below:</h2>
-  <input type="text" id="vid" placeholder="Example: dQw4w9WgXcQ">
-  <button onclick="play()">Watch</button>
-  <div id="box"></div>
-  <script>
-    function play() {
-      var id = document.getElementById('vid').value;
-      if (id.includes("v=")) { id = id.split("v=")[1].split("&")[0]; }
-      document.getElementById('box').innerHTML = '<iframe width="100%" height="400" src="https://www.youtube-nocookie.com' + id + '" frameborder="0" allowfullscreen></iframe>';
-    }
-  </script>
+
+    <h2>Video Viewer</h2>
+    <p>Paste any YouTube link or ID below:</p>
+    
+    <input type="text" id="videoInput" placeholder="Paste link here...">
+    <br>
+    <button onclick="loadVideo()">Watch Video</button>
+
+    <div id="player-container"></div>
+
+    <script>
+        function loadVideo() {
+            var val = document.getElementById('videoInput').value.trim();
+            var id = "";
+
+            if (val.includes("v=")) {
+                // Extracts ID from standard links
+                id = val.split("v=")[1].split("&")[0];
+            } else if (val.includes("youtu.be/")) {
+                // Extracts ID from shortened links
+                id = val.split("youtu.be/")[1].split("?")[0];
+            } else {
+                // Assumes input is just the ID
+                id = val;
+            }
+
+            if (id.length >= 10) {
+                var embedUrl = "https://www.youtube-nocookie.com" + id;
+                document.getElementById('player-container').innerHTML = 
+                    '<iframe src="' + embedUrl + '" frameborder="0" allowfullscreen></iframe>';
+            } else {
+                alert("Please enter a valid link or ID.");
+            }
+        }
+    </script>
+
 </body>
 </html>
