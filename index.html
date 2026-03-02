@@ -1,20 +1,42 @@
-<script>
-  function playVid() {
-    var input = document.getElementById('vidInput').value;
-    var videoId = "";
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Homework Helper</title>
+    <style>
+        body { background: #111; color: #fff; text-align: center; font-family: sans-serif; padding-top: 50px; }
+        input { padding: 10px; width: 300px; border-radius: 5px; border: none; }
+        button { padding: 10px 20px; cursor: pointer; border-radius: 5px; border: none; background: #007bff; color: white; }
+    </style>
+</head>
+<body>
+    <h1>Paste Video Link or ID below:</h1>
+    <input type="text" id="userInput" placeholder="Paste link here...">
+    <button onclick="playVid()">Watch</button>
+    <br><br>
+    <div id="videoContainer"></div>
 
-    // This "Regex" extracts the 11-character ID from any YouTube link format
-    var regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-    var match = input.match(regExp);
+    <script>
+        function playVid() {
+            var input = document.getElementById('userInput').value;
+            var videoId = "";
+            
+            // This regex finds the 11-character ID in any YouTube URL
+            var regExp = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            var match = input.match(regExp);
 
-    if (match && match[2].length == 11) {
-      videoId = match[2];
-    } else {
-      videoId = input; // Fallback if you just paste the ID
-    }
+            if (match && match[2].length == 11) {
+                videoId = match[2];
+            } else {
+                videoId = input; // If it's already just the ID, use it
+            }
 
-    // Loads the video using the "nocookie" bypass domain
-    document.getElementById('player').innerHTML = 
-    '<iframe width="100%" height="500px" src="https://www.youtube-nocookie.com' + videoId + '" frameborder="0" allowfullscreen></iframe>';
-  }
-</script>
+            if (videoId.length == 11) {
+                document.getElementById('videoContainer').innerHTML = 
+                '<iframe width="100%" height="500px" src="https://www.youtube-nocookie.com' + videoId + '" frameborder="0" allowfullscreen></iframe>';
+            } else {
+                alert("Invalid Link or ID. Please try again.");
+            }
+        }
+    </script>
+</body>
+</html>
